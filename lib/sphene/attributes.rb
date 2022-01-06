@@ -8,9 +8,7 @@ module Sphene
     Types = Sphene::Types
 
     def initialize(attrs = {})
-      attrs.each do |name, value|
-        write_attribute(name, value)
-      end
+      assign_attributes(attrs)
     end
 
     def self.included(base)
@@ -30,7 +28,7 @@ module Sphene
     end
 
     def assign_attributes(attributes)
-      attributes.each do |key, value|
+      attributes.each do |name, value|
         write_attribute(key, value)
       end
     end
