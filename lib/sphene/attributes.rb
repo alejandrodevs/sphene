@@ -7,6 +7,12 @@ module Sphene
   module Attributes
     Types = Sphene::Types
 
+    def initialize(attrs = {})
+      attrs.each do |name, value|
+        write_attribute(name, value)
+      end
+    end
+
     def self.included(base)
       base.extend(ClassMethods)
     end
