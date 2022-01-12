@@ -18,5 +18,11 @@ module Sphene
         end
       end
     end
+
+    def to_hash
+      each.with_object({}) do |(name, attribute), data|
+        data[name] = attribute.value
+      end
+    end
   end
 end

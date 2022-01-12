@@ -8,6 +8,7 @@ module Sphene
     Types = Sphene::Types
 
     def initialize(attrs = {})
+      initialize_attributes
       assign_attributes(attrs)
     end
 
@@ -17,29 +18,31 @@ module Sphene
 
     def read_attribute(name)
       ensure_attribute(name) do |name|
-        attributes[name].value
+        @attributes[name].value
       end
     end
 
     def write_attribute(name, value)
       ensure_attribute(name) do |name|
-        attributes[name].value = value
+        @attributes[name].value = value
       end
     end
 
-    def assign_attributes(attributes)
-      attributes.each do |name, value|
-        write_attribute(key, value)
+    def assign_attributes(attrs)
+      attrs.each do |name, value|
+        write_attribute(name, value)
       end
     end
 
     def attributes
-      @attributes ||= begin
-        AttributeSet.from(self.class)
-      end
+      @attributes.to_hash
     end
 
     private
+
+    def initialize_attributes
+      @attributes = AttributeSet.from(self.class)
+    end
 
     def ensure_attribute(name)
       assert_attribute(name)
@@ -47,7 +50,7 @@ module Sphene
     end
 
     def assert_attribute(name)
-      unless attributes.has_key?(name.to_sym)
+      unless @attributes.has_key?(name.to_sym)
         raise InvalidAttributeNameError.new(name)
       end
     end
