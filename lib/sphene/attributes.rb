@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'sphene/types'
-require 'sphene/errors'
+require "sphene/types"
+require "sphene/errors"
 
 module Sphene
   module Attributes

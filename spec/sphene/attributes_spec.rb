@@ -8,41 +8,41 @@ RSpec.describe Sphene::Attributes do
   end
 
   before(:example) do
-    stub_const('User', user)
+    stub_const("User", user)
   end
 
   subject { User.new }
 
-  describe '.attribute' do
-    it 'adds attribute to definition' do
+  describe ".attribute" do
+    it "adds attribute to definition" do
       expect { User.attribute :name, Sphene::Types::String }.
         to change(User, :attributes).from({}).
-        to({ name: { type: Sphene::Types::String }})
+        to({ name: { type: Sphene::Types::String } })
     end
 
-    it 'defines getter method' do
+    it "defines getter method" do
       User.attribute :name, Sphene::Types::String
       expect(subject).to respond_to(:name)
     end
 
-    it 'defines setter method' do
+    it "defines setter method" do
       User.attribute :name, Sphene::Types::String
       expect(subject).to respond_to(:name=)
     end
   end
 
-  describe '.inherited' do
+  describe ".inherited" do
     before(:example) do
       User.class_eval do
         attribute :name, Sphene::Types::String
       end
 
-      stub_const('UserInherited', Class.new(User) do
+      stub_const("UserInherited", Class.new(User) do
         attribute :roles, Sphene::Types::Array, default: []
       end)
     end
 
-    it 'inherits attributes definition' do
+    it "inherits attributes definition" do
       expect(UserInherited.attributes).to eql({
         name: { type: Sphene::Types::String },
         roles: { type: Sphene::Types::Array, default: [] }
@@ -50,8 +50,8 @@ RSpec.describe Sphene::Attributes do
     end
   end
 
-  describe '.attributes' do
-    context 'when attributes have been added' do
+  describe ".attributes" do
+    context "when attributes have been added" do
       before(:example) do
         User.class_eval do
           attribute :name, Sphene::Types::String
@@ -59,7 +59,7 @@ RSpec.describe Sphene::Attributes do
         end
       end
 
-      it 'contains attributes definition' do
+      it "contains attributes definition" do
         expect(User.attributes).to eql({
           name: { type: Sphene::Types::String },
           roles: { type: Sphene::Types::Array, default: [] }
@@ -67,60 +67,60 @@ RSpec.describe Sphene::Attributes do
       end
     end
 
-    context 'when attributes have not been added' do
-      it 'contains empty definition' do
+    context "when attributes have not been added" do
+      it "contains empty definition" do
         expect(User.attributes).to eql({})
       end
     end
   end
 
-  describe '#new' do
+  describe "#new" do
     before(:example) do
       User.class_eval do
         attribute :name, Sphene::Types::String
       end
     end
 
-    context 'when no attributes passed' do
-      it 'initializes empty attributes' do
+    context "when no attributes passed" do
+      it "initializes empty attributes" do
         user = User.new
         expect(user.name).to be nil
       end
     end
 
-    context 'when attributes passed' do
-      it 'initializes attributes' do
-        user = User.new(name: 'Foo')
-        expect(user.name).to eql 'Foo'
+    context "when attributes passed" do
+      it "initializes attributes" do
+        user = User.new(name: "Foo")
+        expect(user.name).to eql "Foo"
       end
     end
 
-    context 'when invalid attributes passed' do
-      it 'raises InvalidAttributeNameError' do
-        expect { User.new(name: 'Foo', power: 10) }.to raise_error(
+    context "when invalid attributes passed" do
+      it "raises InvalidAttributeNameError" do
+        expect { User.new(name: "Foo", power: 10) }.to raise_error(
           Sphene::InvalidAttributeNameError,
-          'Invalid attribute name power'
+          "Invalid attribute name power"
         )
       end
     end
   end
 
-  describe '#assign_attributes' do
+  describe "#assign_attributes" do
     before(:example) do
       User.class_eval do
         attribute :name, Sphene::Types::String
       end
     end
 
-    subject { User.new(name: 'Foo') }
+    subject { User.new(name: "Foo") }
 
-    it 'updates attributes' do
-      subject.assign_attributes({ name: 'Bar' })
-      expect(subject.name).to eql 'Bar'
+    it "updates attributes" do
+      subject.assign_attributes({ name: "Bar" })
+      expect(subject.name).to eql "Bar"
     end
   end
 
-  describe '#attributes' do
+  describe "#attributes" do
     before(:example) do
       User.class_eval do
         attribute :name, Sphene::Types::String
@@ -128,14 +128,14 @@ RSpec.describe Sphene::Attributes do
       end
     end
 
-    subject { User.new(name: 'Foo') }
+    subject { User.new(name: "Foo") }
 
-    it 'returns attributes hash' do
-      expect(subject.attributes).to eql({ name: 'Foo', age: nil })
+    it "returns attributes hash" do
+      expect(subject.attributes).to eql({ name: "Foo", age: nil })
     end
   end
 
-  describe '#read_attribute' do
+  describe "#read_attribute" do
     before(:example) do
       User.class_eval do
         attribute :age, Sphene::Types::Integer
@@ -144,37 +144,37 @@ RSpec.describe Sphene::Attributes do
       end
     end
 
-    subject { User.new(name: 'Foo') }
+    subject { User.new(name: "Foo") }
 
-    context 'when has a value' do
-      it 'returns attribute value' do
-        expect(subject.read_attribute(:name)).to eql 'Foo'
+    context "when has a value" do
+      it "returns attribute value" do
+        expect(subject.read_attribute(:name)).to eql "Foo"
       end
     end
 
-    context 'when has default value' do
-      it 'returns default value' do
+    context "when has default value" do
+      it "returns default value" do
         expect(subject.read_attribute(:roles)).to eql []
       end
     end
 
-    context 'when has not a value' do
-      it 'returns nil' do
+    context "when has not a value" do
+      it "returns nil" do
         expect(subject.read_attribute(:age)).to be nil
       end
     end
 
-    context 'when is invalid' do
-      it 'raises InvalidAttributeNameError' do
+    context "when is invalid" do
+      it "raises InvalidAttributeNameError" do
         expect { subject.read_attribute(:speed) }.to raise_error(
           Sphene::InvalidAttributeNameError,
-          'Invalid attribute name speed'
+          "Invalid attribute name speed"
         )
       end
     end
   end
 
-  context '#write_attribute' do
+  context "#write_attribute" do
     before(:example) do
       User.class_eval do
         attribute :age, Sphene::Types::Integer
@@ -182,21 +182,21 @@ RSpec.describe Sphene::Attributes do
       end
     end
 
-    context 'when is valid' do
-      it 'assigns attribute value' do
-        subject.write_attribute(:name, 'Bar')
-        expect(subject.name).to eql 'Bar'
+    context "when is valid" do
+      it "assigns attribute value" do
+        subject.write_attribute(:name, "Bar")
+        expect(subject.name).to eql "Bar"
       end
 
-      it 'casts value when read attribute' do
-        subject.write_attribute(:age, '10')
+      it "casts value when read attribute" do
+        subject.write_attribute(:age, "10")
         expect(subject.age).to be 10
       end
 
-      it 'casts value lazily' do
-        subject.write_attribute(:age, '10')
+      it "casts value lazily" do
+        subject.write_attribute(:age, "10")
         attribute = subject.instance_variable_get(:@attributes)[:age]
-        expect(attribute.instance_variable_get(:@value_before_cast)).to eql '10'
+        expect(attribute.instance_variable_get(:@value_before_cast)).to eql "10"
 
         expect { subject.age }.
           to change { attribute.instance_variable_get(:@value) }.
@@ -204,11 +204,11 @@ RSpec.describe Sphene::Attributes do
       end
     end
 
-    context 'when is invalid' do
-      it 'raises InvalidAttributeNameError' do
+    context "when is invalid" do
+      it "raises InvalidAttributeNameError" do
         expect { subject.write_attribute(:speed, 10) }.to raise_error(
           Sphene::InvalidAttributeNameError,
-          'Invalid attribute name speed'
+          "Invalid attribute name speed"
         )
       end
     end

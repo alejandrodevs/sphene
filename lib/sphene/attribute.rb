@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sphene
   class Attribute
     attr_reader :name, :type, :default
@@ -9,7 +11,7 @@ module Sphene
     end
 
     def value
-      return default if !ivar_defined?(:@value_before_cast)
+      return default unless ivar_defined?(:@value_before_cast)
       return @value if ivar_defined?(:@value)
       @value = type.cast(value_to_cast)
     end
