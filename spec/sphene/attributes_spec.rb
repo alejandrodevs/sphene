@@ -15,9 +15,9 @@ RSpec.describe Sphene::Attributes do
 
   describe ".attribute" do
     it "adds attribute to definition" do
-      expect { User.attribute :name, Sphene::Types::String }.
-        to change(User, :attributes).from({}).
-        to({ name: { type: Sphene::Types::String } })
+      expect { User.attribute :name, Sphene::Types::String }
+        .to change(User, :attributes).from({})
+        .to({ name: { type: Sphene::Types::String } })
     end
 
     it "defines getter method" do
@@ -198,9 +198,9 @@ RSpec.describe Sphene::Attributes do
         attribute = subject.instance_variable_get(:@attributes)[:age]
         expect(attribute.instance_variable_get(:@value_before_cast)).to eql "10"
 
-        expect { subject.age }.
-          to change { attribute.instance_variable_get(:@value) }.
-          from(nil).to(10)
+        expect { subject.age }
+          .to change { attribute.instance_variable_get(:@value) }
+          .from(nil).to(10)
       end
     end
 

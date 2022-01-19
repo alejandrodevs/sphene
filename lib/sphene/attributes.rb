@@ -50,7 +50,7 @@ module Sphene
     end
 
     def assert_attribute(name)
-      unless @attributes.has_key?(name.to_sym)
+      unless @attributes.key?(name.to_sym)
         raise InvalidAttributeNameError.new(name)
       end
     end
