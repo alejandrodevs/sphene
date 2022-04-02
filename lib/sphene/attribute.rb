@@ -25,7 +25,8 @@ module Sphene
     private
 
     def default_value
-      default.respond_to?(:call) ? default.call(model) : default
+      return default unless default.respond_to?(:call)
+      model.instance_exec(&default)
     end
 
     def ivar_defined?(name)
