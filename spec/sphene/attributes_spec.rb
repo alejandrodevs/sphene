@@ -145,6 +145,7 @@ RSpec.describe Sphene::Attributes do
         attribute :age, Sphene::Types::Integer
         attribute :name, Sphene::Types::String
         attribute :roles, Sphene::Types::Array, default: []
+        attribute :vname, Sphene::Types::Array, default: -> { name }
       end
     end
 
@@ -157,12 +158,20 @@ RSpec.describe Sphene::Attributes do
     end
 
     context "when has default value" do
-      it "returns default value" do
-        expect(subject.read_attribute(:roles)).to eql []
+      context "when is not a proc" do
+        it "returns default value" do
+          expect(subject.read_attribute(:roles)).to eql []
+        end
+      end
+
+      context "when is a proc" do
+        it "returns default result" do
+          expect(subject.read_attribute(:vname)).to eql "Foo"
+        end
       end
     end
 
-    context "when has not a value" do
+    context "when has not value" do
       it "returns nil" do
         expect(subject.read_attribute(:age)).to be nil
       end
