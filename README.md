@@ -30,6 +30,7 @@ class User
   attribute :name, Types::String
   attribute :email, Types::String
   attribute :active, Types::Boolean, default: true
+  attribute :digest, Types::Integer, default: -> { Random.srand }
 end
 ```
 
