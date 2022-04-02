@@ -17,14 +17,14 @@ module Sphene
     end
 
     def read_attribute(name)
-      ensure_attribute(name) do |name|
-        @attributes[name].value
+      ensure_attribute(name) do |attr|
+        @attributes[attr].value
       end
     end
 
     def write_attribute(name, value)
-      ensure_attribute(name) do |name|
-        @attributes[name].value = value
+      ensure_attribute(name) do |attr|
+        @attributes[attr].value = value
       end
     end
 
@@ -41,7 +41,7 @@ module Sphene
     private
 
     def initialize_attributes
-      @attributes = AttributeSet.from(self.class)
+      @attributes = AttributeSet.from(self)
     end
 
     def ensure_attribute(name)

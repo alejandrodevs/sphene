@@ -4,17 +4,17 @@ require "delegate"
 
 module Sphene
   class AttributeSet < SimpleDelegator
-    attr_reader :object
+    attr_reader :model
 
-    def initialize(object)
-      @object = object
+    def initialize(model)
+      @model = model
       super({})
     end
 
-    def self.from(object)
-      new(object).tap do |data|
-        object.attributes.each do |name, options|
-          data[name] = Attribute.new(name, **options)
+    def self.from(model)
+      new(model).tap do |data|
+        model.class.attributes.each do |name, options|
+          data[name] = Attribute.new(name, model, **options)
         end
       end
     end

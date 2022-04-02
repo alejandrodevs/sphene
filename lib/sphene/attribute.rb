@@ -2,34 +2,38 @@
 
 module Sphene
   class Attribute
-    attr_reader :name, :type, :default
+    attr_reader :name, :model, :type, :default
 
-    def initialize(name, type: Types::Default, default: nil)
+    def initialize(name, model, type: Types::Default, default: nil)
       @name = name
+      @model = model
       @type = type
       @default = default
     end
 
     def value
-      return default unless ivar_defined?(:@value_before_cast)
+      return default_value unless ivar_defined?(:@value_before_cast)
       return @value if ivar_defined?(:@value)
-      @value = type.cast(value_to_cast)
+      @value = type.cast(@value_before_cast)
     end
 
     def value=(value)
-      remove_instance_variable(:@value) if ivar_defined?(:@value)
+      remove_ivar(:@value) if ivar_defined?(:@value)
       @value_before_cast = value
     end
 
     private
 
-    def value_to_cast
-      ivar_defined?(:@value_before_cast) ?
-        @value_before_cast : default
+    def default_value
+      default.respond_to?(:call) ? default.call(model) : default
     end
 
     def ivar_defined?(name)
       instance_variable_defined?(name)
+    end
+
+    def remove_ivar(name)
+      remove_instance_variable(name)
     end
   end
 end
