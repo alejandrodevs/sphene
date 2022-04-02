@@ -7,7 +7,7 @@ RSpec.describe Sphene::Attributes do
     end
   end
 
-  before(:example) do
+  before do
     stub_const("User", user)
   end
 
@@ -16,8 +16,8 @@ RSpec.describe Sphene::Attributes do
   describe ".attribute" do
     it "adds attribute to definition" do
       expect { User.attribute :name, Sphene::Types::String }
-        .to change(User, :attributes).from({})
-        .to({ name: { type: Sphene::Types::String } })
+        .to change(User, :attributes)
+        .from({}).to({ name: { type: Sphene::Types::String } })
     end
 
     it "defines getter method" do
@@ -32,7 +32,7 @@ RSpec.describe Sphene::Attributes do
   end
 
   describe ".inherited" do
-    before(:example) do
+    before do
       User.class_eval do
         attribute :name, Sphene::Types::String
       end
@@ -43,16 +43,18 @@ RSpec.describe Sphene::Attributes do
     end
 
     it "inherits attributes definition" do
-      expect(UserInherited.attributes).to eql({
-        name: { type: Sphene::Types::String },
-        roles: { type: Sphene::Types::Array, default: [] }
-      })
+      expect(UserInherited.attributes).to eql(
+        {
+          name: { type: Sphene::Types::String },
+          roles: { type: Sphene::Types::Array, default: [] }
+        }
+      )
     end
   end
 
   describe ".attributes" do
     context "when attributes have been added" do
-      before(:example) do
+      before do
         User.class_eval do
           attribute :name, Sphene::Types::String
           attribute :roles, Sphene::Types::Array, default: []
@@ -60,10 +62,12 @@ RSpec.describe Sphene::Attributes do
       end
 
       it "contains attributes definition" do
-        expect(User.attributes).to eql({
-          name: { type: Sphene::Types::String },
-          roles: { type: Sphene::Types::Array, default: [] }
-        })
+        expect(User.attributes).to eql(
+          {
+            name: { type: Sphene::Types::String },
+            roles: { type: Sphene::Types::Array, default: [] }
+          }
+        )
       end
     end
 
@@ -75,7 +79,7 @@ RSpec.describe Sphene::Attributes do
   end
 
   describe "#new" do
-    before(:example) do
+    before do
       User.class_eval do
         attribute :name, Sphene::Types::String
       end
@@ -106,7 +110,7 @@ RSpec.describe Sphene::Attributes do
   end
 
   describe "#assign_attributes" do
-    before(:example) do
+    before do
       User.class_eval do
         attribute :name, Sphene::Types::String
       end
@@ -121,7 +125,7 @@ RSpec.describe Sphene::Attributes do
   end
 
   describe "#attributes" do
-    before(:example) do
+    before do
       User.class_eval do
         attribute :name, Sphene::Types::String
         attribute :age, Sphene::Types::Integer
@@ -136,7 +140,7 @@ RSpec.describe Sphene::Attributes do
   end
 
   describe "#read_attribute" do
-    before(:example) do
+    before do
       User.class_eval do
         attribute :age, Sphene::Types::Integer
         attribute :name, Sphene::Types::String
@@ -175,7 +179,7 @@ RSpec.describe Sphene::Attributes do
   end
 
   context "#write_attribute" do
-    before(:example) do
+    before do
       User.class_eval do
         attribute :age, Sphene::Types::Integer
         attribute :name, Sphene::Types::String

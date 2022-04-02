@@ -50,9 +50,8 @@ module Sphene
     end
 
     def assert_attribute(name)
-      unless @attributes.key?(name.to_sym)
-        raise InvalidAttributeNameError.new(name)
-      end
+      @attributes.key?(name.to_sym) ||
+        (raise InvalidAttributeNameError, name)
     end
 
     module ClassMethods
@@ -65,6 +64,7 @@ module Sphene
       end
 
       def inherited(base)
+        super
         base.instance_variable_set(:@attributes, attributes.dup)
       end
 
